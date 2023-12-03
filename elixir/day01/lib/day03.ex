@@ -15,16 +15,7 @@ defmodule Day03 do
     |> Enum.reduce(%{}, fn {l, y}, acc ->
       0..String.length(l)
       |> Enum.reduce(acc, fn x, acc ->
-        case get_num_from_map(world, x, y) do
-          nil -> acc
-          val ->
-            if has_symbol_adjacent(world, x, y) do
-              start = get_start_of_num(world[y], x)
-              Map.put(acc, {start, y}, val)
-            else
-              acc
-            end
-        end
+        insert_if_part(world, x, y, acc)
       end)
     end)
 
@@ -32,13 +23,53 @@ defmodule Day03 do
     |> Enum.sum()
   end
 
+
   @doc """
     iex> Day03.part2
-    1
+    82818007
   """
   def part2 do
-    Helpers.read_input_by_lines("../../inputs/day03.txt")
-    1
+    lines = Helpers.read_input_by_lines("../../inputs/day03.txt")
+    world = lines_to_map(lines)
+
+    #traverse world
+    lines
+    |> Enum.with_index(1)
+    |> Enum.map(fn {l, y} -> {l, y - 1} end) # with_index starts at 1 :(
+    |> Enum.reduce(0, fn {l, y}, acc ->
+      Enum.reduce(0..String.length(l), acc, fn x, acc ->
+        case world[y][x] do
+          "*" -> surrounding = get_parts_surrounding(world, x, y)
+          values = Map.values(surrounding)
+          case length(values) do
+            2 -> acc + (List.first(values) * List.last(values))
+            _other -> acc
+          end
+          _other -> acc
+        end
+      end)
+    end)
+  end
+
+  def get_parts_surrounding(world, x, y) do
+    Enum.reduce((y - 1)..(y + 1), %{}, fn y, acc ->
+      Enum.reduce((x - 1)..(x + 1), acc, fn x, acc ->
+        insert_if_part(world, x, y, acc)
+      end)
+    end)
+  end
+
+  def insert_if_part(world, x, y, acc) do
+    case get_num_from_map(world, x, y) do
+      nil -> acc
+      val ->
+        if has_symbol_adjacent(world, x, y) do
+          start = get_start_of_num(world[y], x)
+          Map.put(acc, {start, y}, val)
+        else
+          acc
+        end
+    end
   end
 
    @doc """
