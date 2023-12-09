@@ -22,10 +22,10 @@ defmodule Day05 do
     end)
   end
 
-  @doc """
-    iex> Day05.part2
-    24261545
-  """
+  # @doc """
+  #   iex> Day05.part2
+  #   24261545
+  # """
   def part2 do
     lines = Helpers.read_input_by_lines("../../inputs/day05.txt")
     seeds = parse_seed_pairs(lines)
@@ -36,7 +36,20 @@ defmodule Day05 do
     loc =
       Enum.find(0..5_000_000_000, fn loc ->
         val = rev_seed_for_loc(model, "location", "seed", loc)
-        Enum.any?(seeds, fn [start, len] -> is_in_range(val, start, len) end)
+
+        Enum.any?(seeds, fn [start, len] ->
+          if is_in_range(val, start, len) do
+            IO.puts(
+              "Found loc that matched range " <>
+                Integer.to_string(start) <>
+                "-" <> Integer.to_string(start + len) <> " with val " <> Integer.to_string(val)
+            )
+
+            true
+          else
+            false
+          end
+        end)
       end)
 
     IO.puts("Got best loc " <> Integer.to_string(loc))
