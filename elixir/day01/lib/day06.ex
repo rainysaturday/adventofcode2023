@@ -31,7 +31,7 @@ defmodule Day06 do
   end
 
   @doc """
-    iex> Day06.max_dist_for_run(7)   
+    iex> Day06.max_dist_for_run(7)
     12
   """
   def max_dist_for_run(max_time) do
@@ -41,7 +41,7 @@ defmodule Day06 do
   end
 
   @doc """
-    iex> Day06.num_wins(7, 9)   
+    iex> Day06.num_wins(7, 9)
     4
   """
   def num_wins(max_time, win_dist) do
@@ -52,15 +52,15 @@ defmodule Day06 do
   end
 
   @doc """
-    iex> Day06.dist_when_holding(2, 10)   
+    iex> Day06.dist_when_holding(2, 10)
     16
-    iex> Day06.dist_when_holding(6, 7)   
+    iex> Day06.dist_when_holding(6, 7)
     6
-    iex> Day06.dist_when_holding(7, 7)   
+    iex> Day06.dist_when_holding(7, 7)
     0
-    iex> Day06.dist_when_holding(3, 7)   
+    iex> Day06.dist_when_holding(3, 7)
     12
-    iex> Day06.dist_when_holding(4, 7)   
+    iex> Day06.dist_when_holding(4, 7)
     12
   """
   def dist_when_holding(time, max_time) do
@@ -74,8 +74,12 @@ defmodule Day06 do
     end
   end
 
+  @doc """
+
   # Time:        54     94     65     92
   # Distance:   302   1476   1029   1404
+  """
+  @spec parse([String.t()]) :: [Run]
   def parse(lines) do
     [time_str, dist_str] = lines
 
@@ -83,6 +87,11 @@ defmodule Day06 do
     |> Enum.map(fn {t, d} -> %Run{time: t, dist: d} end)
   end
 
+  @doc """
+    iex> Day06.parse_ints("1 2 3")
+    [1, 2, 3]
+  """
+  @spec parse_ints(String.t()) :: [integer]
   def parse_ints(line) do
     String.split(line, " ")
     |> Enum.filter(fn s -> String.length(s) > 0 end)

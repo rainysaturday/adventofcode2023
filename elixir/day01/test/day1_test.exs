@@ -5,7 +5,8 @@ defmodule Day1Test do
   # doctest Day03
   # doctest Day04
   # doctest Day05
-  doctest Day06
+  # doctest Day06
+  doctest Day07
 
   test "greets the world" do
   end
